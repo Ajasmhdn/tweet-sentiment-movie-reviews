@@ -13,13 +13,6 @@ vectorizer = pickle.load(open("basic_vectorizer_emojiadded.pkl", "rb"))
 
 lemmatizer = WordNetLemmatizer()
 
-# Emoji → sentiment mapping
-def replace_emojis(text):
-    text = re.sub(r'[😊😂😍😄😁😃🙂😉❤️🔥]', ' positive ', text)
-    text = re.sub(r'[😡😠😞😢😭😔👎]', ' negative ', text)
-    text = re.sub(r'[😐😶🤔]', ' neutral ', text)
-    return text
-
 # Clean text (same as training)
 def clean_text(text):
     text = text.lower()
