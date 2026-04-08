@@ -7,7 +7,7 @@ import emoji
 app = Flask(__name__)
 CORS(app)
 
-# Load trained model and vectorizer
+# Load trained model and vectorizers
 model = pickle.load(open("basic_svm_model_emojiadded.pkl", "rb"))
 vectorizer = pickle.load(open("basic_vectorizer_emojiadded.pkl", "rb"))
 
