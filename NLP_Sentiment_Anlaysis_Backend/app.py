@@ -3,7 +3,7 @@ import pickle
 import re
 from flask_cors import CORS
 from nltk.stem import WordNetLemmatizer
-
+import emoji
 app = Flask(__name__)
 CORS(app)
 
@@ -12,6 +12,21 @@ model = pickle.load(open("basic_svm_model_emojiadded.pkl", "rb"))
 vectorizer = pickle.load(open("basic_vectorizer_emojiadded.pkl", "rb"))
 
 lemmatizer = WordNetLemmatizer()
+
+def replace_emojis(text):
+    def convert(match):
+        e = match.group(0)
+        desc = emoji.demojize(e)
+
+        if any(word in desc for word in ['smile', 'laugh', 'heart', 'love', 'fire', 'star']):
+            return ' positive '
+        elif any(word in desc for word in ['angry', 'sad', 'cry', 'broken', 'fear']):
+            return ' negative '
+        else:
+            return ' neutral '
+
+    return emoji.replace_emoji(text, replace=convert)
+
 
 # Clean text (same as training)
 def clean_text(text):
@@ -34,6 +49,7 @@ def clean_text(text):
     words = [lemmatizer.lemmatize(w) for w in words]
 
     return " ".join(words)
+
 
 
 @app.route("/predict", methods=["POST"])
